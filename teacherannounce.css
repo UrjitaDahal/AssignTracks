@@ -1,0 +1,101 @@
+/* General Page Styling */
+body {
+    background-color: #f8e8b8; /* Soft beige background */
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centering the Form */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Form Box Styling */
+.announcement-box {
+    width: 450px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    text-align: center;
+}
+
+/* Header Styling */
+.announcement-header {
+    background-color: #c7a27c; /* Warm brown */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+}
+
+/* Labels */
+.announcement-box label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+    color: #5a4636; /* Dark brown */
+}
+
+/* Input and Textarea */
+.announcement-box input,
+.announcement-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fdf7e3; /* Lighter beige */
+}
+
+/* Textarea Resize */
+.announcement-box textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #c7a27c; /* Warm brown */
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #a37d5e;
+}
+
+/* Message Styling */
+.success-message, .error-message {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.success-message {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.error-message {
+    background-color: #f2dede;
+    color: #a94442;
+}

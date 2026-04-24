@@ -1,0 +1,30 @@
+body {
+            background-color: #f8e8b8;
+            font-family: "Arial", sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+             background: linear-gradient(135deg, #d2b48c, #e3caa8);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            margin-top: 10px;
+             background: linear-gradient(135deg, #c0a684, #e3caa8)
+        }

@@ -1,0 +1,132 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4d9a4; /* Matches dashboard background */
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Form Heading */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Input Fields */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #c7a27c;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #fdf6ec;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Input Focus */
+input:focus, textarea:focus {
+    border-color: #b08968;
+    outline: none;
+    box-shadow: 0 0 8px rgba(208, 164, 54, 0.3);
+}
+
+/* File Input Styling */
+input[type="file"] {
+    padding: 10px;
+    border: none;
+    background-color: #f9f3e8;
+    cursor: pointer;
+}
+
+/* Success & Error Messages */
+.success-message, .error-message {
+    text-align: center;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* Success Message */
+.success-message {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+}
+
+/* Error Message */
+.error-message {
+    color: #d32f2f;
+    background-color: #ffebee;
+}
+
+/* Error Box */
+.error-box {
+    background-color: #ffe6e6;
+    color: #b30000;
+    padding: 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+
+.submitBtn {
+    background-color: #d19a5b;
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover and Active Effects */
+#submitBtn:hover {
+    background-color: #c38d53;
+    transform: translateY(-2px);
+}
+
+#submitBtn:active {
+    background-color: #b47d47;
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,102 @@
+/* General Styling */
+body, html {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #FAF3E0, #E3D5CA); /* Soft Warm Gradient */
+}
+
+/* Login Container */
+.form-contain {
+    width: 360px;
+    padding: 30px;
+    border-radius: 15px; /* Smooth Rounded Edges */
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Logo Styling */
+.form-contain img {
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Headings */
+h2 {
+    color: #8D6E63; /* Soft Brown */
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Labels */
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #6D4C41; /* Warm Brown */
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100%;
+}
+
+/* Input Fields */
+input[type="text"], 
+input[type="password"] {
+    width: 92%;
+    padding: 8px;
+    border: 1px solid #BCAAA4;
+    border-radius: 8px;
+    background: #FFF8E1; /* Light Cream */
+    font-size: 14px;
+    color: #5D4037;
+    outline: none;
+    transition: 0.3s ease-in-out;
+}
+
+/* Focus Effect on Inputs */
+input:focus {
+    border-color: #D4A373;
+    background: #FFECB3;
+}
+
+/* Error Messages */
+.error {
+    font-size: 12px;
+    color: red;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Login Button */
+button {
+    width: 100%;
+    padding: 10px;
+    background: #D4A373; /* Warm Peach */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 10px;
+}
+
+/* Button Hover */
+button:hover {
+    background: #B97A57; /* Slightly Darker Warm Shade */
+}
+
+/* Responsive Styling */
+@media (max-width: 480px) {
+    .form-contain {
+        width: 90%;
+        padding: 20px;
+    }
+}

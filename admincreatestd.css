@@ -1,0 +1,105 @@
+/* Reset some default styles */
+.form-contain {
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.9); /* Light transparent effect */
+    padding: 40px;
+    border-radius: 12px; /* Smooth rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Logo */
+.form-contain img {
+    margin-bottom: 10px;
+}
+
+/* Headers */
+.form-contain h2 {
+    color: #5D4037; /* Warm brown */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: bold;
+    color: #6D4C41;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Input Fields */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="date"], 
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #BCAAA4;
+    border-radius: 8px;
+    background: #FFF8E1; /* Light beige */
+    font-size: 14px;
+    color: #5D4037;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Focus Effect */
+input:focus {
+    border-color: #D4A373; /* Pop color */
+    box-shadow: 0 0 5px rgba(212, 163, 115, 0.5);
+}
+
+/* Error Messages */
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+/* Gender Selection */
+input[type="radio"], 
+label[for="male"], 
+label[for="female"], 
+label[for="other"] {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Register Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #D4A373; /* Matching pop color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background: #B97A57; /* Slightly darker on hover */
+}
+
+/* Registered Student Link */
+a {
+    color: #8D6E63; /* Muted brown */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Hover Effect for Links */
+a:hover {
+    color: #D4A373; /* Matching pop color */
+}
+
+body{
+     background-color: #f8e8b8;
+}

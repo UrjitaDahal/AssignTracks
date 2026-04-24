@@ -1,0 +1,95 @@
+/* General Styles */
+        body {
+            background-color: #e3f2fd;
+            /* Light Blue */
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Container */
+        .container {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+        }
+
+        /* Card Header */
+        .card-header {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 10px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Table Styling */
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #1e88e5;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f8ff;
+            transition: background-color 0.3s ease;
+        }
+
+        /* File Links */
+        .file-links a {
+            display: inline-block;
+            color: #007bff;
+            text-decoration: none;
+            margin: 3px;
+        }
+
+        .file-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: #1e88e5;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: red;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: darkred;
+            transform: translateY(-2px);
+        }
+
+        /* Deadline Crossed */
+        .deadline-crossed {
+            color: red;
+            font-weight: bold;
+        }

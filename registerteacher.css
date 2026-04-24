@@ -1,0 +1,104 @@
+/* General Page Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5E1C8; /* Soft Beige */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Form Container */
+.form-container {
+    background-color: #8B5E3C; /* Rich Brown */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+}
+
+/* Form Heading */
+.form-container h2 {
+    color: #F5E1C8; /* Beige */
+    margin-bottom: 20px;
+}
+
+/* Form Labels */
+.form-container label {
+    display: block;
+    font-size: 16px;
+    margin: 10px 0 5px;
+    text-align: left;
+    color: #F5E1C8; /* Beige */
+}
+
+/* Input Fields */
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #DFC6A9; /* Light Brown */
+    border-radius: 8px;
+    background-color: #F5E1C8; /* Beige */
+    color: #5E3A1C; /* Dark Brown */
+    font-size: 14px;
+}
+
+/* Input Focus Effect */
+.form-container input:focus {
+    outline: none;
+    border: 2px solid #A67C52; /* Lighter Brown */
+    background-color: #FFF1E3;
+}
+
+/* Error Messages */
+.error {
+    color: #FFD700; /* Gold */
+    font-size: 14px;
+}
+
+/* Submit Button */
+.form-container button {
+    background-color: #A67C52; /* Medium Brown */
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s;
+}
+
+/* Hover Effect for Button */
+.form-container button:hover {
+    background-color: #5E3A1C; /* Darker Brown */
+}
+
+/* Login Link */
+.form-container a {
+    display: block;
+    margin-top: 15px;
+    color: #F5E1C8; /* Beige */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Hover Effect for Link */
+.form-container a:hover {
+    color: #FFD700; /* Gold */
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .form-container {
+        width: 90%;
+        padding: 20px;
+    }
+}

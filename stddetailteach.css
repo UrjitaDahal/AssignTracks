@@ -1,0 +1,96 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f3e4; /* Light beige background */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Heading */
+h2, h3 {
+    color: #5a4231;
+    margin-top: 20px;
+}
+
+/* Student Information */
+p {
+    font-size: 18px;
+    color: #5a4231;
+    background: white;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    width: 50%;
+    text-align: left;
+}
+
+/* Table Styling */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Table Headers */
+th {
+    background: #deb887; /* Warm beige tone */
+    color: white;
+    padding: 15px;
+    text-transform: uppercase;
+}
+
+/* Table Data */
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    color: #5a4231;
+}
+
+/* Hover Effect */
+tr:hover {
+    background: #f4e3c1;
+    cursor: pointer;
+}
+
+/* Submission File Links */
+a {
+    color: #2c4f7b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Back Button */
+a[href="student_list.php"] {
+    display: inline-block;
+    background: #a67c52;
+    color: white;
+    padding: 10px 15px;
+    margin: 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+a[href="student_list.php"]:hover {
+    background: #8a5a36;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    table {
+        width: 95%;
+    }
+    p {
+        width: 80%;
+    }
+}

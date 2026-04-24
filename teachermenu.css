@@ -1,0 +1,92 @@
+ body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #deb87a;
+            box-shadow: 0 2px 5px blueviolet;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar a,
+        .dropdown-btn {
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar a:hover,
+        .dropdown-btn:hover {
+            background-color: #2c4f7b;
+            border-radius: 5px;
+        }
+
+        /* Dropdown Container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+      /* Dropdown Content - Hidden by Default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Show dropdown when parent is hovered */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+        .dropdown-content a {
+            color: #3566a1;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Responsive Styling */
+        @media screen and (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .dropdown {
+                width: 100%;
+                text-align: center;
+            }
+
+            .dropdown-content {
+                position: relative;
+                width: 100%;
+            }
+        }

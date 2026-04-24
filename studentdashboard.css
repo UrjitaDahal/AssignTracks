@@ -1,0 +1,62 @@
+/* General Styling */
+body {
+    background-color: #f8e8b8; /* Soft Crème Beige */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fffaf0; /* Light Cream */
+}
+
+/* Header Styling */
+.card-header {
+    background: linear-gradient(135deg, #d2b48c, #e3caa8); /* Warm Beige Gradient */
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Table Styling */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fdf6e3; /* Soft Beige */
+}
+
+.table th {
+    background-color: #c9a66b; /* Warm Brown */
+    color: white;
+    padding: 12px;
+}
+
+.table tbody tr:hover {
+    background-color: #f8eedb; /* Light Cream */
+    transition: background-color 0.3s ease;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #c9a66b; /* Warm Brown */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #a67c52; /* Darker Beige */
+    transform: translateY(-2px);
+}
+
+/* Container Padding */
+.container-fluid {
+    padding: 20px;
+}

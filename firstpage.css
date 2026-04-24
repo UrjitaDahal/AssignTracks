@@ -1,0 +1,91 @@
+/* Minimalist Background */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to right, #d7d2d2, #f9f9f7); /* Warm neutral gradient */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main Container */
+.container-main {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9); /* Light transparent background */
+    padding: 50px 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Title & Subtitle */
+.container-main b {
+    font-size: 32px;
+    color: #333;
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.container-main p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+/* User Selection Cards */
+.options {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 140px;
+    text-align: center;
+}
+
+/* Hover Effect */
+.user-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon Styles */
+.user-card i {
+    font-size: 50px;
+    color: #444;
+    margin-bottom: 15px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+/* Hover Effect for Icons */
+.user-card:hover i {
+    color: #007bff;
+    transform: scale(1.1);
+}
+
+/* Clickable Icons */
+.user-card a {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+/* Hover Effect for Text */
+.user-card a:hover {
+    color: #0056b3;
+}

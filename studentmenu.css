@@ -1,0 +1,88 @@
+ body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            overflow: visible;
+            background-color: #deb87a;
+            box-shadow: 0 2px 5px blueviolet;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        .navbar a, .dropdown-btn {
+            font-size: 16px;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .navbar a:hover, .dropdown-btn:hover {
+            background-color: #b29c45;
+            border-radius: 5px;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            z-index: 1000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            background-color: #b29c45;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Responsive Styling */
+        @media screen and (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar a {
+                display: block;
+                padding: 10px;
+            }
+
+            .dropdown-content {
+                position: relative;
+                width: 100%;
+            }
+        }

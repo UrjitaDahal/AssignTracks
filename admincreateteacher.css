@@ -1,0 +1,128 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5e1c8; /* Beige background */
+    margin: 0;
+    padding: 0;
+   
+    height: 100vh; /* Full viewport height */
+}
+
+/* Form Container */
+.form-container {
+    background: linear-gradient(135deg, #d2b48c, #e3caa8); /* Warm beige gradient */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+     justify-content: center;
+    align-items: center;
+    width: 420px;
+    text-align: center;
+}
+
+/* Form Heading */
+h2 {
+    color: #5D4037; /* Warm brown */
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+    color: #6D4C41; /* Dark brown */
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #BCAAA4;
+    border-radius: 8px;
+    background: #FFF8E1; /* Light beige */
+    font-size: 14px;
+    color: #5D4037;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Input Focus Effect */
+input:focus {
+    border-color: #D4A373;
+    box-shadow: 0 0 5px rgba(212, 163, 115, 0.5);
+}
+
+/* Error Messages */
+.error {
+    color: #B22222; /* Dark red */
+    font-size: 12px;
+    text-align: left;
+}
+
+/* Gender Selection */
+input[type="radio"] {
+    display: none; /* Hide default radio */
+}
+
+input[type="radio"] + label {
+    display: inline-block;
+    background: #DFC6A9;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+input[type="radio"]:checked + label {
+    background: #A67C52;
+    color: white;
+}
+
+/* Submit Button */
+button {
+    background: #D4A373;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Button Hover Effect */
+button:hover {
+    background: #B97A57;
+    transform: translateY(-2px);
+}
+
+/* Registered Teacher Link */
+a {
+    display: inline-block;
+    color: #8D6E63;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Hover Effect for Links */
+a:hover {
+    color: #D4A373;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .form-container {
+        width: 90%;
+        padding: 20px;
+    }
+}
