@@ -1,0 +1,1077 @@
+<?php
+session_start();
+if (!isset($_SESSION['student_id'])) {
+    header("Location: Firstpage.php");
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php';
+$student_id = $_SESSION['student_id'];
+$query = $conn->prepare("SELECT fname, lname, email, dob FROM students WHERE student_id = ?");
+$query->bind_param("i", $student_id);
+$query->execute();
+$result = $query->get_result();
+$student = $result->fetch_assoc();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $new_fname = htmlspecialchars($_POST['fname']);
+    $new_lname = htmlspecialchars($_POST['lname']);
+    $new_email = htmlspecialchars($_POST['email']);
+    $new_dob = $_POST['dob'];
+    $today = date("Y-m-d");
+    $minDate = date("Y-m-d", strtotime("-15 years"));
+    if ($new_dob >= $today) {
+        $error = "Date of birth cannot be today or in the future!";
+    } elseif ($new_dob > $minDate) {
+        $error = "You must be at least 15 years old!";
+    } elseif (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format!";
+    } else {
+        $update_query = $conn->prepare("UPDATE students SET fname = ?, lname = ?, email = ?, dob = ? WHERE student_id = ?");
+        $update_query->bind_param("ssssi", $new_fname, $new_lname, $new_email, $new_dob, $student_id);
+        $update_query->execute();
+        if ($update_query->affected_rows > 0) {
+            $success = "Profile updated successfully!";
+            header("Refresh:1");
+        } else {
+            $error = "No changes made!";
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/studentmenu.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../CSS/studentprofile.css?v=<?php echo time(); ?>">
+</head>
+<body>
+    <?php include('studentmenu.php') ?>
+    <div class="container">
+        <div class="card border-0 shadow bg-light">
+            <div class="card-header">📌 Student Profile</div>
+            <div class="card-body text-center">
+                <?php if (isset($success)) {
+                    echo "<div class='alert alert-success'>$success</div>";
+                } ?>
+                <?php if (isset($error)) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                } ?>
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label"><strong>First Name:</strong></label>
+                        <input type="text" name="fname" class="form-control" value="<?php echo htmlspecialchars($student['fname']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Last Name:</strong></label>
+                        <input type="text" name="lname" class="form-control" value="<?php echo htmlspecialchars($student['lname']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Email:</strong></label>
+                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($student['email']); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Date of Birth:</strong></label>
+                        <input type="date" name="dob" class="form-control" value="<?php echo htmlspecialchars($student['dob']); ?>" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dobField = document.querySelector('input[name="dob"]');
+            const today = new Date();
+            const minAge = 14;
+            const minDate = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+            dobField.setAttribute("max", minDate.toISOString().split("T")[0]);
+            document.querySelector("form").addEventListener("submit", function(event) {
+                const selectedDob = new Date(dobField.value);
+                if (!dobField.value) {
+                    alert("Please select a valid Date of Birth.");
+                    event.preventDefault();
+                } else if (selectedDob >= today) {
+                    alert("Date of birth cannot be today or in the future!");
+                    event.preventDefault();
+                } else if (selectedDob > minDate) {
+                    alert("You must be at least 14 years old!");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+<?php
+session_start();
+require_once '../ajaxscripts/databaseconnection.php'; // Include database connection
+
+// Fetch student data
+$student_id = $_SESSION['student_id']; // Assuming student ID is stored in session
+$query = $conn->prepare("SELECT fname, lname, email, dob FROM students WHERE student_id = ?");
+$query->bind_param("i", $student_id);
+$query->execute();
+$result = $query->get_result();
+$student = $result->fetch_assoc();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $new_fname = htmlspecialchars($_POST['fname']);
+    $new_lname = htmlspecialchars($_POST['lname']);
+    $new_email = htmlspecialchars($_POST['email']);
+    $new_dob = $_POST['dob'];
+
+    // Date validation
+    $today = date("Y-m-d");
+    $minDate = date("Y-m-d", strtotime("-15 years")); // Minimum allowed DOB
+
+    if ($new_dob >= $today) {
+        $error = "Date of birth cannot be today or in the future!";
+    } elseif ($new_dob > $minDate) {
+        $error = "You must be at least 15 years old!";
+    } elseif (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email format!";
+    } else {
+        // Update all fields including DOB
+        $update_query = $conn->prepare("UPDATE students SET fname = ?, lname = ?, email = ?, dob = ? WHERE student_id = ?");
+        $update_query->bind_param("ssssi", $new_fname, $new_lname, $new_email, $new_dob, $student_id);
+        $update_query->execute();
+
+        if ($update_query->affected_rows > 0) {
+            $success = "Profile updated successfully!";
+            header("Refresh:1"); // Refresh to show updated data
+        } else {
+            $error = "No changes made!";
+        }
+    }
+}
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/studentmenu.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../CSS/studentprofile.css?v=<?php echo time(); ?>">
+</head>
+
+<body>
+    <?php include('studentmenu.php') ?>
+    <div class="container">
+        <div class="card border-0 shadow bg-light">
+            <div class="card-header">📌 Student Profile</div>
+            <div class="card-body text-center">
+                <?php if (isset($success)) {
+                    echo "<div class='alert alert-success'>$success</div>";
+                } ?>
+                <?php if (isset($error)) {
+                    echo "<div class='alert alert-danger'>$error</div>";
+                } ?>
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label"><strong>First Name:</strong></label>
+                        <input type="text" name="fname" class="form-control" value="<?php echo htmlspecialchars($student['fname']); ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Last Name:</strong></label>
+                        <input type="text" name="lname" class="form-control" value="<?php echo htmlspecialchars($student['lname']); ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Email:</strong></label>
+                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($student['email']); ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Date of Birth:</strong></label>
+                        <input type="date" name="dob" class="form-control" value="<?php echo htmlspecialchars($student['dob']); ?>" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dobField = document.querySelector('input[name="dob"]');
+            const today = new Date();
+            const minAge = 14;
+            const minDate = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+
+            // Allow selection of all past dates, but restrict selection on form submit
+            dobField.setAttribute("max", minDate.toISOString().split("T")[0]);
+
+            document.querySelector("form").addEventListener("submit", function(event) {
+                const selectedDob = new Date(dobField.value);
+
+                if (!dobField.value) {
+                    alert("Please select a valid Date of Birth.");
+                    event.preventDefault();
+                } else if (selectedDob >= today) {
+                    alert("Date of birth cannot be today or in the future!");
+                    event.preventDefault();
+                } else if (selectedDob > minDate) {
+                    alert("You must be at least 14 years old!");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+
+<?php
+
+session_start();
+$_SESSION['user_type'] = "student";
+$student_id = "";
+$_SESSION['student_id'] = $student_id;
+session_write_close();
+
+require_once '../ajaxscripts/databaseconnection.php'; 
+$username_error = $password_error = "";
+$username = $password = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty($_POST["username"])) {
+        $username_error = "Username is required.";
+    } else {
+        $username = $_POST["username"];
+    }
+    if (empty($_POST["password"])) {
+        $password_error = "Password is required.";
+    } elseif (strlen($_POST["password"]) < 8) {
+        $password_error = "Password must be at least 8 characters long.";
+    } else {
+        $password = $_POST["password"];
+    }
+    if (empty($username_error) && empty($password_error)) {
+        $stmt = $conn->prepare("SELECT student_id, password FROM students WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 1) { 
+            $stmt->bind_result($student_id, $hashedPassword);
+            $stmt->fetch();
+            if (password_verify($password, $hashedPassword)) {
+                //session_regenerate_id(true);
+                //$_SESSION['student_id'] = $row['student_id'];
+                var_dump($_SESSION['student_id']);
+                exit();
+                header("Location: studentdashboard.php");
+                exit();
+            } else {
+                $password_error = "Invalid password.";
+            }
+        } else {
+            $username_error = "No account found with that username.";
+        }
+
+        $stmt->close();
+    }
+}
+?>
+
+create of teacher
+<?php
+session_start();
+if (!isset($_SESSION['teacher_id'])) {
+    header("Location: Firstpage.php");
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php';
+if (headers_sent()) {
+    die("Headers already sent. Cannot redirect.");
+}
+$error_message = ""; 
+$success_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $deadline = $_POST["deadline"];
+    date_default_timezone_set("Asia/Kathmandu");
+    $current_time = time();
+    $deadline_time = strtotime($deadline);
+    $min_deadline_time = $current_time + (12 * 60 * 60);
+
+    if ($deadline_time < $min_deadline_time) {
+        $error_message = "Error: Deadline must be at least 12 hours from the current time.";
+    } else {
+        $file_path = "";
+        if (isset($_FILES["assignment_file"]) && $_FILES["assignment_file"]["error"] == 0) {
+            $target_dir = "uploads/";
+            $file_name = basename($_FILES["assignment_file"]["name"]);
+            if (!is_dir($target_dir)) {
+                mkdir($target_dir, 0777, true); // Creates the directory if missing
+            }
+
+            if (move_uploaded_file($_FILES["assignment_file"]["tmp_name"], $target_file)) {
+                $file_path = $target_file;
+            }
+            if (!move_uploaded_file($_FILES["assignment_file"]["tmp_name"], $target_file)) {
+                $error_message = "Error uploading file. Check permissions!";
+            }
+        }
+
+        // Insert into database
+        $teacher_id = $_SESSION['user_id'];
+        $query = "INSERT INTO assignmentsteacher (teacher_id, subject, title, description, deadline, file_path) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("isssss", $teacher_id, $_POST['subject'], $title, $description, $deadline, $file_path);
+
+        if ($stmt->execute()) {
+            $success_message = "Assignment created successfully!";
+        } else {
+            $error_message = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+}
+?>
+
+<?php
+session_start();
+$teacher_id="";
+$_SESSION['user_type'] = "teacher"; 
+$_SESSION['teacher_id'] = $teacher_id;
+
+session_write_close();
+require_once '../ajaxscripts/databaseconnection.php'; 
+$username_error = $password_error = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+    if (empty($username)) {
+        $username_error = "Username is required";
+    }
+    
+    if (empty($password)) {
+        $password_error = "Password is required";
+    }
+    if (empty($username_error) && empty($password_error)) {
+        $query = "SELECT teacher_id, username, password FROM teachers WHERE username = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($user_id, $user_username, $user_password);
+        $stmt->fetch();
+        if ($stmt->num_rows == 1 && password_verify($password, $user_password)) {
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['username'] = $user_username;
+            $_SESSION['role'] = 'teacher';
+            header("Location: teacherdashboard.php");
+            exit();
+        } else {
+            $password_error = "Invalid username or password.";
+        }
+        $stmt->close();
+    }
+    $conn->close();
+}
+
+
+?>
+
+<?php
+session_start();
+require_once '../ajaxscripts/databaseconnection.php';
+
+$response = ['success' => false, 'message' => ''];
+
+if (!isset($_SESSION['user_id'])) {
+    $response['message'] = 'You must be logged in.';
+    echo json_encode($response);
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $teacher_id = $_SESSION['user_id'];
+    $subject = $_POST['subject'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $deadline = $_POST['deadline'];
+
+    // File upload
+    $file_path = '';
+    if (isset($_FILES['assignment_file']) && $_FILES['assignment_file']['error'] === 0) {
+        $target_dir = "uploads/";
+        $file_name = basename($_FILES['assignment_file']['name']);
+        $target_file = $target_dir . $file_name;
+
+        if (move_uploaded_file($_FILES['assignment_file']['tmp_name'], $target_file)) {
+            $file_path = $target_file;
+        }
+    }
+
+    // Save assignment
+    $stmt = $conn->prepare("INSERT INTO assignmentsteacher (teacher_id, subject, title, description, deadline, file_path) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param('isssss', $teacher_id, $subject, $title, $description, $deadline, $file_path);
+
+    $stmt->close();
+    $conn->close();
+}
+
+echo json_encode($response);
+
+
+<?php
+session_start();
+if (!isset($_SESSION['teacher_id'])) {
+    header("Location: Firstpage.php"); 
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php';
+$error_message = "";
+$success_message = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $title = trim($_POST["title"]);
+    $message = trim($_POST["message"]);
+    $teacher_id = $_SESSION['user_id'];
+
+    if (empty($title) || empty($message)) {
+        $error_message = "⚠️ Title and message cannot be empty!";
+    } else {
+        $query = "INSERT INTO announcements (teacher_id, title, message, created_at) VALUES (?, ?, ?, NOW())";
+        $stmt = $conn->prepare($query);
+
+        if ($stmt === false) {
+            die("❌ Error in SQL Query: " . $conn->error);
+        }
+        $stmt->bind_param("iss", $teacher_id, $title, $message);
+        if ($stmt->execute()) {
+            echo "<script>alert('✅ Announcement posted successfully!');</script>";
+        } else {
+            echo "<script>alert('❌ Error: " . $stmt->error . "');</script>";
+        }
+
+        $stmt->close();
+    }
+}
+?>
+
+
+<?php
+session_start();
+if (!isset($_SESSION['teacher_id'])) {
+    header("Location: Firstpage.php");
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php';
+
+$error_message = "";
+$success_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $title = trim($_POST["title"]);
+    $message = trim($_POST["message"]);
+    $teacher_id = $_SESSION['teacher_id']; // ✅ FIXED: Use correct session key
+
+    if (empty($title) || empty($message)) {
+        $error_message = "⚠️ Title and message cannot be empty!";
+    } else {
+        $query = "INSERT INTO announcements (teacher_id, title, message, created_at) VALUES (?, ?, ?, NOW())";
+        $stmt = $conn->prepare($query);
+
+        if ($stmt === false) {
+            die("❌ Error in SQL Query: " . $conn->error);
+        }
+
+        $stmt->bind_param("iss", $teacher_id, $title, $message);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('✅ Announcement posted successfully!');</script>";
+        } else {
+            echo "<script>alert('❌ Error: " . $stmt->error . "');</script>";
+        }
+
+        $stmt->close();
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Announcement</title>
+    <link href="../CSS/teachermenu.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="../CSS/teacherannounce.css?v=<?php echo time(); ?>" rel="stylesheet">
+
+</head>
+
+<body>
+    <?php include('teachermenu.php'); ?>
+
+    <div class="container">
+        <div class="announcement-box">
+            <div class="announcement-header">
+                📢 Create an Announcement
+            </div>
+            <form id="announcement-form" action="teacherannounce.php" method="POST">
+                <label for="title">Title ✏️</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="message">Message 📝</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit" class="btn-primary">📢 Post Announcement</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+    </script>
+</body>
+
+</html>
+
+<?php
+session_start();
+if (!isset($_SESSION['student_id'])) {
+    header("Location: Firstpage.php");
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php'; 
+$student_id = $_SESSION['student_id'];
+$student_query = $conn->prepare("SELECT fname, lname, email FROM students WHERE student_id = ?");
+$student_query->bind_param("i", $student_id);
+$student_query->execute();
+$student_result = $student_query->get_result();
+$student = $student_result->fetch_assoc();
+$homework_query = $conn->query("SELECT assignment_id, subject, title FROM assignmentsteacher ORDER BY deadline ASC");
+$file_error = $success_message = "";
+$description = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $assignment_id = $_POST['assignment_id'];
+    $description = htmlspecialchars(trim($_POST['description']));
+    if (isset($_FILES['homework_file']) && $_FILES['homework_file']['error'] == 0) {
+        $file_name = basename($_FILES['homework_file']['name']);
+        $file_path = "uploads/" . $file_name;
+        if (!is_dir("uploads")) {
+            mkdir("uploads", 0777, true);
+        }
+        if (move_uploaded_file($_FILES['homework_file']['tmp_name'], $file_path)) {
+            $insert_query = $conn->prepare("INSERT INTO student_assignments (assignment_id, student_id, description, file_path,submission_date) VALUES (?, ?, ?, ?, NOW())");
+            $insert_query->bind_param("iiss", $assignment_id, $student_id, $description, $file_path);
+            if ($insert_query->execute()) {
+                $success_message = "Homework submitted successfully!";
+                $description = ""; 
+            } else {
+                $file_error = "Error submitting your homework. Please try again.";
+            }
+        } else {
+            $file_error = "Failed to upload file.";
+        }
+    } else {
+        $file_error = "Please upload a valid file.";
+    }
+}
+?>
+
+
+
+submits: 
+<?php
+session_start();
+if (!isset($_SESSION['student_id'])) {
+    header("Location: Firstpage.php");
+    exit();
+}
+require_once '../ajaxscripts/databaseconnection.php';
+
+$student_id = $_SESSION['student_id'];
+$student_query = $conn->prepare("SELECT fname, lname, email FROM students WHERE student_id = ?");
+$student_query->bind_param("i", $student_id);
+$student_query->execute();
+$student_result = $student_query->get_result();
+$student = $student_result->fetch_assoc();
+
+$homework_query = $conn->query("SELECT assignment_id, subject, title FROM assignmentsteacher ORDER BY deadline ASC");
+
+$file_error = $success_message = "";
+$description = "";
+$max_file_size = 50 * 1024 * 1024;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $assignment_id = $_POST['assignment_id'];
+    $description = htmlspecialchars(trim($_POST['description']));
+
+    // Allowed file types
+    $allowed_types = ['txt', 'docx', 'pdf', 'pptx'];
+
+    if (isset($_FILES['homework_file']) && $_FILES['homework_file']['error'] == 0) {
+        $file_name = basename($_FILES['homework_file']['name']);
+        $file_size = $_FILES['homework_file']['size'];
+        $file_tmp = $_FILES['homework_file']['tmp_name'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $file_path = "uploads/" . time() . "_" . $file_name;
+
+        // Validate file type
+        if (!in_array($file_ext, $allowed_types)) {
+            $file_error = "Invalid file type. Only .txt, .docx, .pdf, .pptx are allowed.";
+        }
+        // Validate file size
+        elseif ($file_size > $max_file_size) {
+            $file_error = "File size must be 20MB or less.";
+        } else {
+            // Create "uploads" directory if it doesn't exist
+            if (!is_dir("uploads")) {
+                mkdir("uploads", 0777, true);
+            }
+
+            // Move uploaded file
+            if (move_uploaded_file($file_tmp, $file_path)) {
+                // Insert into database with timestamp
+                $insert_query = $conn->prepare("INSERT INTO student_assignments (assignment_id, student_id, description, file_path, submission_date) VALUES (?, ?, ?, ?, NOW())");
+                $insert_query->bind_param("iiss", $assignment_id, $student_id, $description, $file_path);
+
+                if ($insert_query->execute()) {
+                    $success_message = "Homework submitted successfully!";
+                    $description = "";
+                } else {
+                    $file_error = "Error submitting your homework. Please try again.";
+                }
+            } else {
+                $file_error = "Failed to upload file.";
+            }
+        }
+    } else {
+        $file_error = "Please upload a valid file.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Homework Submission</title>
+    <link rel="stylesheet" href="../CSS/studentmenu.css?v<?php echo time() ?>">
+    <link rel="stylesheet" href="../CSS/stdsubmit.css?v<?php echo time() ?>">
+</head>
+
+<body>
+    <?php include('studentmenu.php') ?>
+    <div class="container">
+        <h2>Submit Homework</h2>
+        <?php if ($success_message): ?>
+            <p class="success"><?php echo $success_message; ?></p>
+        <?php endif; ?>
+        <?php if ($file_error): ?>
+            <p class="error"><?php echo $file_error; ?></p>
+        <?php endif; ?>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="assignment_id">Select Assignment:</label>
+            <select name="assignment_id" required>
+                <?php while ($row = $homework_query->fetch_assoc()): ?>
+                    <option value="<?= $row['assignment_id'] ?>"><?= htmlspecialchars($row['subject'] . " - " . $row['title']) ?></option>
+                <?php endwhile; ?>
+            </select>
+
+            <label for="description">Description (optional):</label>
+            <textarea name="description"><?= htmlspecialchars($description) ?></textarea>
+
+            <label for="homework_file">Upload Homework (Max: 50MB, .txt, .docx, .pdf, .pptx):</label>
+            <input type="file" name="homework_file" id="homework_file" required onchange="validateFile()">
+            <p id="fileError" style="color: red;"></p>
+
+            <button type="submit">Submit</button>
+
+            <?php if ($file_error): ?>
+                <p class="error"><?= $file_error ?></p>
+            <?php elseif ($success_message): ?>
+                <p class="success"><?= $success_message ?></p>
+            <?php endif; ?>
+        </form>
+
+        <script>
+            function validateFile() {
+                const fileInput = document.getElementById('homework_file');
+                const fileError = document.getElementById('fileError');
+                const maxFileSize = 50 * 1024 * 1024; 
+                const allowedExtensions = ['txt', 'docx', 'pdf', 'pptx'];
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const fileSize = file.size;
+                    const fileName = file.name;
+                    const fileExt = fileName.split('.').pop().toLowerCase();
+
+                    // Validate file type
+                    if (!allowedExtensions.includes(fileExt)) {
+                        fileError.textContent = "Invalid file type. Only .txt, .docx, .pdf, .pptx are allowed.";
+                        fileInput.value = "";
+                        return;
+                    }
+
+                    // Validate file size
+                    if (fileSize > maxFileSize) {
+                        fileError.textContent = "File size must be 20MB or less.";
+                        fileInput.value = "";
+                        return;
+                    }
+
+                    fileError.textContent = ""; 
+                }
+            }
+        </script>
+
+    </div>
+</body>
+
+</html>
+<?php
+$conn->close();
+?>
+
+
+
+
+<?php
+
+session_start();
+if (!isset($_SESSION['teacher_id'])) {
+    die("Error: Teacher not logged in!");
+}
+require_once '../ajaxscripts/databaseconnection.php';
+$error_message = "";
+$success_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $teacher_id = $_SESSION['teacher_id'];
+    $check_teacher = $conn->prepare("SELECT teacher_id FROM teachers WHERE teacher_id = ?");
+    $check_teacher->bind_param("i", $teacher_id);
+    $check_teacher->execute();
+    $check_teacher->store_result();
+
+    if ($check_teacher->num_rows == 0) {
+        die("Error: Teacher ID does not exist in the database!");
+    }
+    $check_teacher->close();
+
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $deadline = $_POST["deadline"];
+
+    date_default_timezone_set("Asia/Kathmandu");
+    $current_time = time();
+    $deadline_time = strtotime($deadline);
+    $min_deadline_time = $current_time + (12 * 60 * 60);
+
+    if ($deadline_time < $min_deadline_time) {
+        $error_message = "Error: Deadline must be at least 12 hours from the current time.";
+    } else {
+        $file_path = "";
+
+
+        if (isset($_FILES["assignment_file"]) && $_FILES["assignment_file"]["error"] == 0) {
+            $target_dir = "uploads/";
+
+
+            if (!is_dir($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+
+            $target_file = $target_dir . basename($_FILES["assignment_file"]["name"]);
+
+            if (move_uploaded_file($_FILES["assignment_file"]["tmp_name"], $target_file)) {
+                $file_path = $target_file;
+            } else {
+                $error_message = "Error uploading file. Check permissions!";
+            }
+        }
+
+
+        $query = "INSERT INTO assignmentsteacher (teacher_id, subject, title, description, deadline, file_path) 
+          VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("isssss", $teacher_id, $_POST['subject'], $title, $description, $deadline, $file_path);
+
+        if ($stmt->execute()) {
+            $success_message = "Assignment created successfully!";
+        } else {
+            $error_message = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Assignment</title>
+    <link rel="stylesheet" href="../CSS/teachercreate.css">
+    <link rel="stylesheet" href="../CSS/teachermenu.css">
+</head>
+
+<body>
+    <?php include('teachermenu.php'); ?>
+
+    <div class="form-container">
+        <h2>✍️Create Assignment</h2>
+
+        <p id="errorIcon"></p> <!-- Icon will be displayed here -->
+        <p id="deadlineError"></p> <!-- Error or success message will appear here -->
+
+        <?php if (!empty($error_message)) : ?>
+            <p class="error-message"><?php echo $error_message; ?></p>
+        <?php endif; ?>
+
+        <!-- Display Success Message -->
+        <?php if (!empty($success_message)) : ?>
+            <p class="success-message"><?php echo $success_message; ?></p>
+        <?php endif; ?>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="deadline">🗓️ Deadline for Submission:</label>
+            <input type="datetime-local" id="deadline" name="deadline" required>
+
+            <label for="assignment_file">Upload Assignment File:</label>
+            <input type="file" id="assignment_file" name="assignment_file">
+
+            <button type="submit" class="submitBtn">📤 Create Assignment</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deadlineInput = document.getElementById("deadline");
+            const submitButton = document.getElementById("submitBtn");
+            const errorMessage = document.getElementById("deadlineError");
+            const errorIcon = document.getElementById("errorIcon");
+
+            function validateDeadline() {
+                if (!deadlineInput.value) {
+                    errorMessage.innerHTML = "⚠️ Please select a deadline.";
+                    submitButton.disabled = true;
+                    return;
+                }
+                const currentTime = new Date();
+                const deadlineTime = new Date(deadlineInput.value);
+                const minDeadlineTime = new Date(currentTime.getTime() + (12 * 60 * 60 * 1000));
+
+                if (deadlineTime < minDeadlineTime) {
+                    errorMessage.innerHTML = "⏳ Deadline must be at least <b>12 hours</b> from now!";
+                    errorMessage.classList.add("error-box");
+                    errorIcon.innerHTML = "⚠️";
+                    submitButton.disabled = true;
+                } else {
+                    errorMessage.innerHTML = "✅ Deadline is valid!";
+                    errorMessage.classList.remove("error-box");
+                    errorIcon.innerHTML = "✔️";
+                    submitButton.disabled = false;
+                }
+            }
+
+            deadlineInput.addEventListener("input", validateDeadline);
+        });
+    </script>
+
+</body>
+
+</html>
+
+CREATE ASSIGNMENT FOR TEACHER ONE
+
+<?php
+
+session_start();
+if (!isset($_SESSION['teacher_id'])) {
+    die("Error: Teacher not logged in!");
+}
+require_once '../ajaxscripts/databaseconnection.php';
+$error_message = "";
+$success_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $teacher_id = $_SESSION['teacher_id'];
+    $check_teacher = $conn->prepare("SELECT teacher_id FROM teachers WHERE teacher_id = ?");
+    $check_teacher->bind_param("i", $teacher_id);
+    $check_teacher->execute();
+    $check_teacher->store_result();
+
+    if ($check_teacher->num_rows == 0) {
+        die("Error: Teacher ID does not exist in the database!");
+    }
+    $check_teacher->close();
+
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $deadline = $_POST["deadline"];
+
+    date_default_timezone_set("Asia/Kathmandu");
+    $current_time = time();
+    $deadline_time = strtotime($deadline);
+    $min_deadline_time = $current_time + (12 * 60 * 60);
+
+    if ($deadline_time < $min_deadline_time) {
+        $error_message = "Error: Deadline must be at least 12 hours from the current time.";
+    } else {
+        $file_path = "";
+
+
+        if (isset($_FILES["assignment_file"]) && $_FILES["assignment_file"]["error"] == 0) {
+            $target_dir = "uploads/";
+
+
+            if (!is_dir($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+
+            $target_file = $target_dir . basename($_FILES["assignment_file"]["name"]);
+
+            if (move_uploaded_file($_FILES["assignment_file"]["tmp_name"], $target_file)) {
+                $file_path = $target_file;
+            } else {
+                $error_message = "Error uploading file. Check permissions!";
+            }
+        }
+
+
+        $query = "INSERT INTO assignmentsteacher (teacher_id, subject, title, description, deadline, file_path) 
+          VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("isssss", $teacher_id, $_POST['subject'], $title, $description, $deadline, $file_path);
+
+        if ($stmt->execute()) {
+            $success_message = "Assignment created successfully!";
+        } else {
+            $error_message = "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Assignment</title>
+    <link rel="stylesheet" href="../CSS/teachercreate.css">
+    <link rel="stylesheet" href="../CSS/teachermenu.css">
+</head>
+
+<body>
+    <?php include('teachermenu.php'); ?>
+
+    <div class="form-container">
+        <h2>✍️Create Assignment</h2>
+
+        <p id="errorIcon"></p> <!-- Icon will be displayed here -->
+        <p id="deadlineError"></p> <!-- Error or success message will appear here -->
+
+        <?php if (!empty($error_message)) : ?>
+            <p class="error-message"><?php echo $error_message; ?></p>
+        <?php endif; ?>
+
+        <!-- Display Success Message -->
+        <?php if (!empty($success_message)) : ?>
+            <p class="success-message"><?php echo $success_message; ?></p>
+        <?php endif; ?>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="deadline">🗓️ Deadline for Submission:</label>
+            <input type="datetime-local" id="deadline" name="deadline" required>
+
+            <label for="assignment_file">Upload Assignment File:</label>
+            <input type="file" id="assignment_file" name="assignment_file">
+
+            <button type="submit" class="submitBtn">📤 Create Assignment</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deadlineInput = document.getElementById("deadline");
+            const submitButton = document.getElementById("submitBtn");
+            const errorMessage = document.getElementById("deadlineError");
+            const errorIcon = document.getElementById("errorIcon");
+
+            function validateDeadline() {
+                if (!deadlineInput.value) {
+                    errorMessage.innerHTML = "⚠️ Please select a deadline.";
+                    submitButton.disabled = true;
+                    return;
+                }
+                const currentTime = new Date();
+                const deadlineTime = new Date(deadlineInput.value);
+                const minDeadlineTime = new Date(currentTime.getTime() + (12 * 60 * 60 * 1000));
+
+                if (deadlineTime < minDeadlineTime) {
+                    errorMessage.innerHTML = "⏳ Deadline must be at least <b>12 hours</b> from now!";
+                    errorMessage.classList.add("error-box");
+                    errorIcon.innerHTML = "⚠️";
+                    submitButton.disabled = true;
+                } else {
+                    errorMessage.innerHTML = "✅ Deadline is valid!";
+                    errorMessage.classList.remove("error-box");
+                    errorIcon.innerHTML = "✔️";
+                    submitButton.disabled = false;
+                }
+            }
+
+            deadlineInput.addEventListener("input", validateDeadline);
+        });
+    </script>
+
+</body>
+
+</html>
